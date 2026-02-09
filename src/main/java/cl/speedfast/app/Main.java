@@ -4,10 +4,9 @@ import cl.speedfast.gestor.ZonaDeCarga;
 import cl.speedfast.model.Pedido;
 import cl.speedfast.model.Repartidor;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args){
@@ -31,8 +30,12 @@ public class Main {
         es.execute(r3);
         // cierra la conexion una vez esta terminado el proceso.
         es.shutdown();
-        if (es.isTerminated()) {
-            System.out.println("Killing");
+        try {
+            if (es.awaitTermination(30, TimeUnit.SECONDS)) {
+                System.out.println("Killing");
+                es.shutdownNow();
+            }
+        } catch (InterruptedException e ){
             es.shutdownNow();
         }
     }

@@ -1,18 +1,19 @@
 package cl.speedfast.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.UUID;
 
 public class Pedido {
-    private int id;
+    private final UUID id;
     private String direccionEntrega;
     private EstadoPedido estado;
 
     public Pedido(String direccionEntrega) {
+        this.id = UUID.randomUUID();
         this.direccionEntrega = direccionEntrega;
         this.estado = EstadoPedido.PENDIENTE;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -34,11 +35,9 @@ public class Pedido {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Pedido{");
-        sb.append("id=").append(id);
-        sb.append(", direccionEntrega='").append(direccionEntrega).append('\'');
-        sb.append(", estado=").append(estado);
-        sb.append('}');
-        return sb.toString();
+        return "Pedido{" + "id=" + id +
+                ", direccionEntrega='" + direccionEntrega + '\'' +
+                ", estado=" + estado +
+                '}';
     }
 }
