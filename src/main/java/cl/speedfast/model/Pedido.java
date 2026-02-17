@@ -7,6 +7,10 @@ public class Pedido {
     private String direccionEntrega;
     private EstadoPedido estado;
 
+    public Pedido() {
+        this.id = UUID.randomUUID();
+    }
+
     public Pedido(String direccionEntrega) {
         this.id = UUID.randomUUID();
         this.direccionEntrega = direccionEntrega;
