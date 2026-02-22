@@ -6,15 +6,25 @@ public class Pedido {
     private final UUID id;
     private String direccionEntrega;
     private EstadoPedido estado;
+    private TipoPedido tipo;
 
     public Pedido() {
         this.id = UUID.randomUUID();
+        this.estado = EstadoPedido.PENDIENTE;
     }
 
     public Pedido(String direccionEntrega) {
         this.id = UUID.randomUUID();
         this.direccionEntrega = direccionEntrega;
         this.estado = EstadoPedido.PENDIENTE;
+    }
+
+    public TipoPedido getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoPedido tipo) {
+        this.tipo = tipo;
     }
 
     public UUID getId() {
