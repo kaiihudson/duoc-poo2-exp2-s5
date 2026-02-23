@@ -96,7 +96,7 @@ public class VentanaRegistroPedido extends JFrame {
         String sDireccion = direccion.getText();
         if (!sDireccion.isEmpty()){
             pedido.setDireccionEntrega(direccion.getText().trim());
-            z.agregarPedido(pedido);
+            z.crearPedido(pedido);
             ventana.dispose();
         }
     }

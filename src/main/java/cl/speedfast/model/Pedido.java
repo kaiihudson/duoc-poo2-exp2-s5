@@ -1,22 +1,26 @@
 package cl.speedfast.model;
 
-import java.util.UUID;
-
 public class Pedido {
-    private final UUID id;
+    private int id;
     private String direccionEntrega;
     private EstadoPedido estado;
     private TipoPedido tipo;
 
     public Pedido() {
-        this.id = UUID.randomUUID();
         this.estado = EstadoPedido.PENDIENTE;
+        this.tipo = TipoPedido.COMIDA;
     }
 
     public Pedido(String direccionEntrega) {
-        this.id = UUID.randomUUID();
         this.direccionEntrega = direccionEntrega;
         this.estado = EstadoPedido.PENDIENTE;
+    }
+
+    public Pedido(int id, String direccionEntrega, EstadoPedido estado, TipoPedido tipo) {
+        this.id = id;
+        this.direccionEntrega = direccionEntrega;
+        this.estado = estado;
+        this.tipo = tipo;
     }
 
     public TipoPedido getTipo() {
@@ -27,7 +31,7 @@ public class Pedido {
         this.tipo = tipo;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 

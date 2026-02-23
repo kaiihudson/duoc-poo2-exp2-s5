@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query.sql" value="12bef776-3927-45b8-b947-f68a6104c0a9" />
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query_1.sql" value="12bef776-3927-45b8-b947-f68a6104c0a9" />
+    <file url="file://$PROJECT_DIR$/src/main/java/cl/speedfast/database/EntregaDAO.java" value="12bef776-3927-45b8-b947-f68a6104c0a9" />
+    <file url="file://$PROJECT_DIR$/src/main/java/cl/speedfast/database/RepartidorDAO.java" value="12bef776-3927-45b8-b947-f68a6104c0a9" />
+  </component>
+</project>

@@ -1,17 +1,15 @@
 package cl.speedfast.ui;
 
 import cl.speedfast.gestor.ZonaDeCarga;
-import cl.speedfast.model.Repartidor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MainWindow extends JFrame {
     private final JButton crearPedido = new JButton("Registrar Pedido");
-    private final JButton listarPedidos = new JButton("Listar Pedidos");
+    private final JButton listarPedidos = new JButton("Listar Pedidos Pendientes");
+    private final JButton crearRepartidor = new JButton("Registrar Repartidor");
+    private final JButton listarRepartidores = new JButton("Listar Repartidores");
     private final JButton iniciarEntregas = new JButton("Iniciar Entregas");
     private final JButton cancelar = new JButton("Cancelar");
 
@@ -21,26 +19,38 @@ public class MainWindow extends JFrame {
 
         JFrame frame = new JFrame();
         frame.setTitle("SpeedFast");
-        frame.setBounds(100, 100, 700, 300);
-        frame.setSize(700, 300);
+        frame.setBounds(100, 100, 400, 300);
+        frame.setSize(400, 300);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setLayout(new GridLayout());
+        frame.setLayout(new GridLayout(4,1));
         frame.setResizable(false);
 
-        JPanel panel = addComponents();
         JPanel extraActions = addExit();
         addActions();
-        frame.add(panel);
+        frame.add(addComponents0());
+        frame.add(addComponents1());
+        frame.add(addComponents2());
         frame.add(extraActions);
     }
 
-    private JPanel addComponents() {
+    private JPanel addComponents0() {
         JPanel panel = new JPanel();
 
         panel.add(crearPedido);
         panel.add(listarPedidos);
+        return panel;
+    }
+
+    private JPanel addComponents1(){
+        JPanel panel = new JPanel();
+        panel.add(crearRepartidor);
+        panel.add(listarRepartidores);
+        return panel;
+    }
+    private JPanel addComponents2(){
+        JPanel panel = new JPanel();
         panel.add(iniciarEntregas);
         return panel;
     }
@@ -57,31 +67,14 @@ public class MainWindow extends JFrame {
         zc.getPedidosPendientes().forEach(p -> sb.append(p.toString()).append("\n"));
         return sb.toString();
     }
+    private String listadoRepartidores(){
+        StringBuilder sb = new StringBuilder();
+        zc.getRepartidores().forEach(repartidor -> sb.append(repartidor.toString()).append("\n"));
+        return sb.toString();
+    }
 
     private void executeService(){
-        // crear repartidores por defecto
-        Repartidor r1 = new Repartidor("Sebastian", zc);
-        Repartidor r2 = new Repartidor("ebastianS", zc);
-        Repartidor r3 = new Repartidor("bastianSe", zc);
-
-        if (!zc.getPedidosPendientes().isEmpty()){
-            // usa executor service
-            ExecutorService es = Executors.newFixedThreadPool(3);
-            // ejecuta los repartidores como hilos aparentes
-            es.execute(r1);
-            es.execute(r2);
-            es.execute(r3);
-            // cierra la conexion una vez esta terminado el proceso.
-            es.shutdown();
-            try {
-                if (es.awaitTermination(30, TimeUnit.SECONDS)) {
-                    System.out.println("Killing");
-                    es.shutdownNow();
-                }
-            } catch (InterruptedException e ){
-                es.shutdownNow();
-            }
-        }
+        zc.executeAll();
     }
 
     private void listarPedidos(){
@@ -92,9 +85,41 @@ public class MainWindow extends JFrame {
         }
     }
 
+    private void listarRepartidores(){
+        if (zc.getRepartidores().isEmpty()){
+            JOptionPane.showOptionDialog(this, "No hay repartidores para listar", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+        } else {
+            JOptionPane.showMessageDialog(this, listadoRepartidores());
+        }
+    }
+
+    private void crearRepartidorJOption(){
+        int returnedValue;
+        System.out.println("Creando Repartidor");
+        FormularioRepartidor formularioRepartidor = new FormularioRepartidor();
+        returnedValue = JOptionPane.showOptionDialog(
+                this,
+                formularioRepartidor,
+                "Agregar Repartidor",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                null,
+                null
+        );
+        if (JOptionPane.OK_OPTION == returnedValue){
+            String nombreRepartidor = formularioRepartidor.getNombreRepartidor();
+            if (nombreRepartidor != null){
+                zc.crearRepartidor(nombreRepartidor);
+            }
+        }
+    }
+
     private void addActions() {
         crearPedido.addActionListener(e -> {new VentanaRegistroPedido(zc);});
         listarPedidos.addActionListener(e -> {listarPedidos();});
+        crearRepartidor.addActionListener(e -> {crearRepartidorJOption();});
+        listarRepartidores.addActionListener(e -> {listarRepartidores();});
         iniciarEntregas.addActionListener(e -> {executeService();});
         cancelar.addActionListener(e -> {System.exit(0);});
     }
