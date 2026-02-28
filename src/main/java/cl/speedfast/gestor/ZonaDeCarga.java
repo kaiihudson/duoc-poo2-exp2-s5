@@ -4,6 +4,7 @@ import cl.speedfast.database.EntregaDAO;
 import cl.speedfast.database.PedidoDAO;
 import cl.speedfast.database.RepartidorDAO;
 import cl.speedfast.exceptions.EstadoIncorrectoException;
+import cl.speedfast.model.Entrega;
 import cl.speedfast.model.EstadoPedido;
 import cl.speedfast.model.Pedido;
 import cl.speedfast.model.Repartidor;
@@ -31,7 +32,7 @@ public class ZonaDeCarga {
     }
 
     public void updateListaPedidos(){
-        List<Pedido> listaPedidosPendientes = pedidoDAO.obtenerPedidos();
+        List<Pedido> listaPedidosPendientes = pedidoDAO.findAllPedidos();
         pedidosPendientes.clear();
         for(Pedido pedido : listaPedidosPendientes){
             if (pedido.getEstado() == EstadoPedido.PENDIENTE){
@@ -41,7 +42,7 @@ public class ZonaDeCarga {
     }
 
     public void crearPedido(Pedido pedido){
-        pedidoDAO.guardar(pedido.getDireccionEntrega(), pedido.getTipo(), pedido.getEstado());
+        pedidoDAO.createPedido(pedido);
     }
 
     public synchronized void agregarPedido(Pedido p){
@@ -50,17 +51,18 @@ public class ZonaDeCarga {
     }
 
     public synchronized void updatePedido(Pedido p, EstadoPedido estado){
-        pedidoDAO.updateStatus(p, estado);
+        p.setEstado(estado);
+        pedidoDAO.updatePedido(p);
     }
 
     public void crearRepartidor(String nombreRepartidor){
         Repartidor r = new Repartidor(nombreRepartidor);
-        repartidorDAO.crearRepartidor(r);
+        repartidorDAO.createRepartidor(r);
         updateListaRepartidores();
     }
 
     public void updateListaRepartidores(){
-        List<Repartidor> listaRepartidores = repartidorDAO.listarTodos();
+        List<Repartidor> listaRepartidores = repartidorDAO.getRepartidores();
         for(Repartidor repartidor : listaRepartidores){
             repartidor.setZonaDeCarga(this);
         }
@@ -72,7 +74,8 @@ public class ZonaDeCarga {
         return pedidosPendientes.poll();
     }
     public void logPedido(Pedido p, Repartidor r) throws SQLException {
-        entregaDAO.guardar(p, r);
+        Entrega entrega = new Entrega(p.getId(), r.getId());
+        entregaDAO.crearEntrega(entrega);
     }
 
     public void executeAll(){

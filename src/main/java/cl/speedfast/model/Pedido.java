@@ -11,11 +11,6 @@ public class Pedido {
         this.tipo = TipoPedido.COMIDA;
     }
 
-    public Pedido(String direccionEntrega) {
-        this.direccionEntrega = direccionEntrega;
-        this.estado = EstadoPedido.PENDIENTE;
-    }
-
     public Pedido(int id, String direccionEntrega, EstadoPedido estado, TipoPedido tipo) {
         this.id = id;
         this.direccionEntrega = direccionEntrega;
@@ -33,6 +28,10 @@ public class Pedido {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDireccionEntrega() {

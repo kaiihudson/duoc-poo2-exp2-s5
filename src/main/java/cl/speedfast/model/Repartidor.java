@@ -4,7 +4,7 @@ import cl.speedfast.gestor.ZonaDeCarga;
 
 public class Repartidor implements Runnable {
     private int id;
-    private final String nombre;
+    private String nombre;
     private ZonaDeCarga zonaDeCarga = null;
 
     public Repartidor(int id, String nombre) {
@@ -31,6 +31,14 @@ public class Repartidor implements Runnable {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override

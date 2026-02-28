@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 public class VentanaRegistroPedido extends JFrame {
     Pedido pedido = new Pedido();
     ZonaDeCarga z;
-    private final JTextField id = new JTextField();
+//    private final JTextField id = new JTextField();
     private final JTextField direccion = new JTextField();
     private final String[] opcionesCombo = {"Comida", "Encomienda", "Express"};
     private final JComboBox<String> tipoPedido = new JComboBox<>(opcionesCombo);
@@ -75,10 +75,10 @@ public class VentanaRegistroPedido extends JFrame {
     private JPanel formPedido(){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3,2, 8, 8));
-        panel.add(new JLabel("ID"));
-        id.setEditable(false);
-        id.setText(String.valueOf(pedido.getId()));
-        panel.add(id);
+//        panel.add(new JLabel("ID"));
+//        id.setEditable(false);
+//        id.setText(String.valueOf(pedido.getId()));
+//        panel.add(id);
         panel.add(new JLabel("Direccion"));
         panel.add(direccion);
         panel.add(new JLabel("Tipo de pedido"));
